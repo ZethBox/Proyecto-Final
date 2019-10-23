@@ -2,6 +2,12 @@
 #define MODELO_H
 #include "lista.h"
 
+//Constantes de ordenamiento
+const int NOMBRE = 1;
+const int PRECIO = 2;
+const int RESTAURANTE = 3;
+const int PROMOCIONES = 4;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //Estructuras
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +87,44 @@ TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> **listaProductos);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
+ * Busca en la lista de productos todos los productos cuyo nombre o descripción contengan
+ * la cadena pasada como parámetro.
+ * Entradas:
+ *  cadena - cadena de caracteres que se quiere usar para filtrar los productos
+ * Salidas:
+ *  Lista - con productos que contengan la cadena en el nombre o descripcion
+ *  NULL - si no hay productos que cumplan con este criterio
+ */ 
+TNodo<Producto>* buscarProducto(char* cadena);
+
+/**
+ * Ordena la lista de productos por uno de estos criterios: nombre, precio, restaurante ó promociones
+ * Hay constantes que representan estos criterios definidas arriba.
+ * Entradas:
+ *  listaProductos - lista de los productos que será ordenada
+ *  criterio - Criterio de ordenación (1, 2, 3, 4) constantes definidas arriba 
+ */ 
+void ordenarLista(TNodo<Producto> **listaProductos, int criterio);
+
+/**
+ * Muestra la lista de productos pasados por parametro en consola.
+ * Por cada página se muestran 10 productos, de cada productos se muestra:
+ * El código, nombre y el valor.
+ * Se permite seleccionar un producto de la lista para añadirlo al carrito de compras.
+ */ 
+void mostrarLista(TNodo<Producto> **listaProductos);
+
+/**
+ * Muestra el carrito de compras pasado por parámetro en la consola.
+ * Se permite al usuario borrar elementos del carrito, al hacerlo se actualiza.
+ * Tambien se permite comprar el carrito, entonces para cada producto en el carrito se 
+ * efectúa la venta respectiva.
+ * Entradas:
+ *  carrito - el carrito de compras que es una lista de productos
+ */ 
+void mostrarCarrito(TNodo<Producto> **carrito);
+
+/**
  * Vende un producto con el codigo pasado por parametro.
  * Al venderlo la cantidad disponible debe disminuir y la cantidad vendida debe aumentar.
  * Si no hay suficientes productos para la venta, el producto no es vendido
@@ -95,7 +139,7 @@ bool venderProducto(TNodo<Producto> **listaProductos, int codigo);
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-//Funciones Auxiliares
+//Funciones Auxiliares y Adicionales
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
