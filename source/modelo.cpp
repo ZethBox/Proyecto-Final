@@ -128,3 +128,7 @@ bool venderProducto(TNodo<Producto> **listaProductos, int codigo) {
 TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> **listaProductos) {
     return NULL;
 }
+
+TNodo<Producto> *darProductosMenosVendidos(TNodo<Producto> **listaProductos) {
+    return NULL;
+}

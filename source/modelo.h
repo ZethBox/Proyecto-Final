@@ -75,13 +75,22 @@ bool eliminarProducto(TNodo<Producto> **listaProductos, int codigo);
 Producto* consultarProducto(TNodo<Producto> **listaProductos, int codigo);
 
 /**
- * Retorna una lista con los 5 productos mas vendidos de la lista pasada por productos
+ * Retorna una lista con los 5 productos mas vendidos de la lista pasada por parametro
  * Entradas:
  *  listaProductos - lista de los productos
  * Salidas:
  *  Lista con los 5 productos mas vendidos
  */ 
 TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> **listaProductos);
+
+/**
+ * Retorna una lista con los 5 productos menos vendidos de la lista pasada por parametro
+ * Entradas:
+ *  listaProductos - lista de los productos
+ * Salidas:
+ *  Lista con los 5 productos menos vendidos
+ */ 
+TNodo<Producto> *darProductosMenosVendidos(TNodo<Producto> **listaProductos);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //Funciones de Cliente
