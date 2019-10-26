@@ -13,9 +13,8 @@ void interfazUsuario();
 int main()
 {
     int n;
-
     CrearLista(&listaProductos);
-
+    system("CLS");
     cout << "Ingrese el tipo de usuario:" << endl;
     cout << "1. Administrador \n2. Usuario" << endl;
     cin >> n;
@@ -23,9 +22,11 @@ int main()
     switch (n)
     {
     case 1:
+        system("CLS");
         interfazAdministrador();
         break;
     case 2:
+        system("CLS");
         interfazUsuario();
         break;
     default:
@@ -40,6 +41,7 @@ void interfazAdministrador()
     int codigo;
     while (true)
     {
+        cout << endl;
         cout << "--Administrador--" << endl;
         cout << "1. Agregar un producto" << endl;
         cout << "2. Modificar un producto" << endl;
@@ -51,6 +53,7 @@ void interfazAdministrador()
         switch (n)
         {
         case 1:
+            system("CLS");
             Producto nuevo;
             crearProducto(nuevo);
             cout << "Ingresar codigo: " << endl;
@@ -67,15 +70,23 @@ void interfazAdministrador()
             cout << "Ingresar nombre del restaurante" << endl;
             cin.ignore();
             cin.getline(nuevo.restaurante, 100);
-            agregarProducto(&listaProductos, nuevo);
-            imprimirLista(&listaProductos);
+            if (agregarProducto(&listaProductos, nuevo)) {
+                system("CLS");
+                cout << "Se ha agregado el producto" << endl;
+                imprimirLista(&listaProductos);
+            }
+            else {
+                system("CLS");
+                cout << "Un producto con este codigo ya existe en la lista" << endl;
+            }
             break;
         case 2:
+            system("CLS");
             cout << "Ingresar codigo del producto a modificar: " << endl;
             codigo = 0;
             cin >> codigo;
             Producto *modificado;
-            modificado = consultarProducto(codigo);
+            modificado = consultarProducto(&listaProductos, codigo);
             if (modificado != NULL)
             {
                 cout << "Ingresar nuevo costo del producto: " << endl;
@@ -85,6 +96,8 @@ void interfazAdministrador()
                 cin.getline(modificado->descripcion, 500);
                 cout << "Ingresar nuevo precio de venta del producto: " << endl;
                 cin >> modificado->precioVenta;
+                system("CLS");
+                cout << "Se ha modificado el producto" << endl;
             }
             else
             {
@@ -92,40 +105,51 @@ void interfazAdministrador()
             }
             break;
         case 3:
+            system("CLS");
             cout << "Ingresar codigo del producto a eliminar: " << endl;
             codigo = 0;
             cin >> codigo;
-            if (eliminarProducto(&listaProductos, codigo))
+            if (eliminarProducto(&listaProductos, codigo)) {
+                system("CLS");
                 cout << "Se ha eliminado el producto. " << endl;
-            else
+            }
+            else{
+                system("CLS");
                 cout << "No se encontro el codigo en la lista de productos!" << endl;
+            }
             break;
         case 4:
+            system("CLS");
             cout << "Ingresar el codigo del producto buscado: " << endl;
             codigo = 0;
             cin >> codigo;
             Producto *consultado;
-            consultado = consultarProducto(codigo);
+            consultado = consultarProducto(&listaProductos, codigo);
             if (consultado != NULL)
             {
+                system("CLS");
                 cout << "Codigo: " << consultado->codigo << endl;
                 cout << "Nombre: " << consultado->nombre << endl;
                 cout << "Precio de venta: " << consultado->precioVenta << endl;
             }
             else
             {
+                system("CLS");
                 cout << "El codigo ingresado no se encontro en la lista de productos!" << endl;
             }
             break;
         case 5:
+            system("CLS");
             TNodo<Producto> *act;
             act = darProductosMasVendidos(&listaProductos);
             int puesto;
             puesto = 1;
             if(act == NULL) {
+                system("CLS");
                 cout << "La lista esta vacia" << endl;
             }
             while(act != NULL) {
+                system("CLS");
                 cout << puesto++ << " ";
                 cout << "Producto: " << (act->dato).nombre << endl;
                 cout << "Codigo: " << (act->dato).codigo << endl;
@@ -133,6 +157,7 @@ void interfazAdministrador()
             }
             break;
         case 6:
+            system("CLS");
             cout << "Desea guardar los cambios antes de salir?" << endl;
             cout << "1. Si" << endl;
             cout << "2. No" << endl;
@@ -141,20 +166,25 @@ void interfazAdministrador()
             switch (aux)
             {
             case 1:
+                system("CLS");
                 cout << "Se han guardado los cambios" << endl;
                 //TODO agregar codigo para guardar los cambios
                 return;
                 break;
             case 2:
+                system("CLS");
                 cout << "Los cambios no han sido guardados" << endl;
                 return;
                 break;
             default:
+                system("CLS");
                 cout << "Opcion incorrecta" << endl;
                 break;
             }
             break;
         default:
+            system("CLS");
+            imprimirLista(&listaProductos);
             break;
         }
     }
@@ -163,4 +193,5 @@ void interfazAdministrador()
 //TODO implementar la interfaz de usuario
 void interfazUsuario()
 {
+    cout << endl;
 }

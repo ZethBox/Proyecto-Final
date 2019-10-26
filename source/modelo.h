@@ -60,12 +60,13 @@ bool eliminarProducto(TNodo<Producto> **listaProductos, int codigo);
 /**
  * Busca en la lista de productos un producto cuyo codigo sea igual al pasado por parametro y devuelve el apuntador a dicho producto
  * Entradas:
+ *  listaProductos - Lista de los productos
  *  codigo - codigo del producto a consultar
  * Salidas:
  *  apuntador al producto - si se encuentra el producto con dicho codigo
  *  NULL - si no se encuentra el codigo del producto
  */ 
-Producto* consultarProducto(int codigo);
+Producto* consultarProducto(TNodo<Producto> **listaProductos, int codigo);
 
 /**
  * Retorna una lista con los 5 productos mas vendidos de la lista pasada por productos

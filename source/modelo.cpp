@@ -40,6 +40,20 @@ bool existe(TNodo<Producto> **listaProductos, Producto buscado)
     return false;
 }
 
+bool existe(TNodo<Producto> **listaProductos, int codigoBuscado)
+{
+    TNodo<Producto> *producto = *listaProductos;
+    while (producto != NULL)
+    {
+        if ((producto->dato).codigo == codigoBuscado)
+        {
+            return true;
+        }
+        producto = producto->sig;
+    }
+    return false;
+}
+
 bool agregarProducto(TNodo<Producto> **listaProductos, Producto nuevo)
 {
     if (!existe(listaProductos, nuevo))
@@ -60,7 +74,7 @@ void imprimirLista(TNodo<Producto> **listaProductos)
     while (producto != NULL)
     {
         actual = producto->dato;
-        printf("Producto: %s - Codigo: %i \n", actual.nombre, actual.codigo);
+        printf("Producto: %s - Codigo: %i - Costo: %.2f$ \n", actual.nombre, actual.codigo, actual.costo);
         producto = producto->sig;
     }
 }
@@ -86,8 +100,23 @@ bool eliminarProducto(TNodo<Producto> **listaProductos, int codigo)
 }
 
 //TODO implementar metodo
-Producto* consultarProducto(int codigo) {
-    return NULL;
+Producto* consultarProducto(TNodo<Producto> **listaProductos, int codigo) {
+    TNodo<Producto> *act;
+    act = *listaProductos;
+    bool encontrado = false;
+    
+    while(act != NULL && !encontrado) {
+        if((act->dato).codigo == codigo) {
+            encontrado = true;
+            break;
+        }
+        act = act->sig;
+    }
+
+    if(encontrado)
+        return &(act->dato);
+    else
+        return NULL;
 }
 
 //TODO implementar metodo
