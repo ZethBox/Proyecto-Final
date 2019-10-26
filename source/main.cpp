@@ -202,37 +202,10 @@ void interfazAdministrador()
 void interfazUsuario()
 {
     cout << endl;
-<<<<<<< HEAD
-=======
     cout << "--Cliente--" << endl;
     cout << "1. Buscar un producto" << endl;
     cout << "2. Ordenar lista" << endl;
     cout << "3. Mostrar catálogo" << endl;
     cout << "4. Mostrar carrito" << endl;
     cout << "6. Salir del programa" << endl;
-    cout << endl;
-    cout << "Ingrese el texto para filtrar la lista" << endl;
-    cout << endl;
-    cout << "Ingrese el criterio por el cual ordenar la lista" << endl;
-    cout << "1. Nombre" << endl;
-    cout << "2. Precio" << endl;
-    cout << "3. Restaurante" << endl;
-    cout << "4. Promociones" << endl;
-    cout << endl;
-    cout << "1. 1000\tCoca Cola\t2.99" << endl;
-    cout << "2. 1010\tSprite\t2.99" << endl;
-    cout << "3. 1020\tPepsi\t2.99" << endl;
-    cout << "Puede ingresar el numero respectivo del producto para agregarlo al carrito, o 0 para volver" << endl;
-    cout << endl;
-    cout << "--Carrito de Compras--" << endl;
-    cout << "1. 1000\tCoca Cola\t2.99" << endl;
-    cout << "2. 1010\tSprite\t2.99" << endl;
-    cout << "Puede ingresar el numero respectivo del producto para quitarlo o incrementar la cantidad que se desea comprar del producto" << endl;
-    cout << endl;
-    cout << "Ingresar nuevo costo del producto: " << endl;
-    cout << "Ingresar nueva descripcion del producto: " << endl;
-    cout << "Ingresar nuevo precio de venta del producto: " << endl;
-    cout << "Ingresar 1. Si el producto esta en promocion, 2. Si no esta en promocion" << endl;
-    cout << endl;
->>>>>>> 561cc938d853f1e2abca6c7e4714792072492f3e
 }
