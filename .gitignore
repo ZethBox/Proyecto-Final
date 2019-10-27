@@ -1,2 +1,4 @@
 .vscode/
 *.exe
+*.plist
+source/main.dSYM/Contents/Resources/DWARF
