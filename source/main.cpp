@@ -187,7 +187,6 @@ void interfazAdministrador()
             switch (aux)
             {
             case 1:
-                system("CLS");
                 cout << "Se han guardado los cambios" << endl;
                 //TODO agregar codigo para guardar los cambios
                 return;
