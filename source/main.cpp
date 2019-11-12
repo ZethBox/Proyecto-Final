@@ -1,5 +1,6 @@
 #include <iostream>
 #include "lista.cpp"
+#include "pila.cpp"
 #include "modelo.cpp"
 #include "string.h"
 
@@ -7,16 +8,17 @@ using namespace std;
 
 /**
  * Lista total de los productos
- */ 
+ */
 TNodo<Producto> *listaProductos;
 
 /**
  * Lista de productos a comprar
- */ 
+ */
 TNodo<Producto> *carritoCompras;
 
 void interfazAdministrador();
 void interfazUsuario();
+
 
 int main()
 {
@@ -82,16 +84,18 @@ void interfazAdministrador()
             cout << "Esta en promocion? \n1. Si\nCualquier otra letra si no" << endl;
             n = 0;
             cin >> n;
-            if(n == 1) 
+            if (n == 1)
                 nuevo.enPromocion = true;
             cout << "Ingresar cantidad disponible:" << endl;
             cin >> nuevo.cantidadDisponible;
-            if (agregarProducto(&listaProductos, nuevo)) {
+            if (agregarProducto(&listaProductos, nuevo))
+            {
                 system("CLS");
                 cout << "Se ha agregado el producto" << endl;
                 imprimirLista(&listaProductos);
             }
-            else {
+            else
+            {
                 system("CLS");
                 cout << "Un producto con este codigo ya existe en la lista" << endl;
             }
@@ -117,7 +121,7 @@ void interfazAdministrador()
                 cout << "Esta en promocion? \n1. Si\nCualquier otra letra si no" << endl;
                 n = 0;
                 cin >> n;
-                if(n == 1)
+                if (n == 1)
                     modificado->enPromocion = true;
                 system("CLS");
                 cout << "Se ha modificado el producto" << endl;
@@ -132,11 +136,13 @@ void interfazAdministrador()
             cout << "Ingresar codigo del producto a eliminar: " << endl;
             codigo = 0;
             cin >> codigo;
-            if (eliminarProducto(&listaProductos, codigo)) {
+            if (eliminarProducto(&listaProductos, codigo))
+            {
                 system("CLS");
                 cout << "Se ha eliminado el producto. " << endl;
             }
-            else{
+            else
+            {
                 system("CLS");
                 cout << "No se encontro el codigo en la lista de productos!" << endl;
             }
@@ -157,7 +163,7 @@ void interfazAdministrador()
                 cout << "Precio de venta: " << consultado->precioVenta << endl;
                 cout << "Descripcion: " << consultado->descripcion << endl;
                 cout << "Promocion: ";
-                if(consultado->enPromocion)
+                if (consultado->enPromocion)
                     cout << "Si" << endl;
                 else
                     cout << "No" << endl;
@@ -175,7 +181,7 @@ void interfazAdministrador()
             TNodo<Producto> *act;
             act = darProductosMasVendidos(&listaProductos);
             int puesto;
-            
+
             break;
         case 6:
             system("CLS");
@@ -207,6 +213,50 @@ void interfazAdministrador()
             imprimirLista(&listaProductos);
             break;
         }
+    }
+}
+
+void mostrarCatalogo(TNodo<Producto> **lista)
+{
+    NodoPila<Producto *> *pila1;
+    NodoPila<Producto *> *pila2;
+    TNodo<Producto> *aux = *lista;
+
+    int i;
+
+    bool first = false;
+    int fsSize = 10;
+
+    while (aux != NULL)
+    {
+        Producto arreglo[10];
+        for (i = 0; i < 10 && aux != NULL; i++)
+        {
+            arreglo[i] = aux->dato;
+            aux = aux->sig;
+        }
+        //Defines the size of the first array
+        if(!first) {
+            if(i < 10) {
+                fsSize = i;
+            }
+            first = true;
+        }
+        push(&pila1, arreglo);
+    }
+    if(peek(&pila1) != NULL) {
+        mostrarPagina(peek(&pila1), fsSize, 1);
+    }
+}
+
+void mostrarPagina(Producto *pagina, int size, int numero)
+{
+    system("cls");
+    cout << "Pagina " << numero << endl;
+    int i;
+    for (i = 0; i < size; i++)
+    {
+        cout << i << ". " << pagina[i].codigo << "\t" << pagina[i].nombre << endl;
     }
 }
 
