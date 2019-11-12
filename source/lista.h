@@ -2,7 +2,7 @@
   #define __LISTA_H
 
   #include <stdlib.h>
-  #include <curses.h>
+  #include <conio.h>
 
   template <class T>
   struct TNodo
