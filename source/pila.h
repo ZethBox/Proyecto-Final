@@ -19,7 +19,7 @@
   void DestruirPila(NodoPila<T> **cab);
 
   template <class T>
-  NodoPila<T> *CrearNodo(T dato);
+  NodoPila<T> *CrearNodoPila(T dato);
 
   template <class T>
   void push(NodoPila<T> **cab, T dato);
@@ -31,7 +31,7 @@
    * Retorna el primer elemento de la pila
   */ 
   template <class T>
-  T peek(NodoPila<T> **cab);
+  T* peek(NodoPila<T> **cab);
 
   template <class T>
   bool PilaVacia(NodoPila<T> **cab);

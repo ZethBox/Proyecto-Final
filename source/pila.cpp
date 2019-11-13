@@ -20,7 +20,7 @@ void DestruirPila(NodoPila<T> **cab)
 }
 
 template <class T>
-NodoPila<T> *CrearNodo(T dato)
+NodoPila<T> *CrearNodoPila(T dato)
 {
     NodoPila<T> *nuevo = new NodoPila<T>();
 
@@ -32,7 +32,7 @@ NodoPila<T> *CrearNodo(T dato)
 template <class T>
 void push(NodoPila<T> **cab, T dato)
 {
-    NodoPila<T> *nuevo = CrearNodo(dato);
+    NodoPila<T> *nuevo = CrearNodoPila(dato);
 
     nuevo->sig = *cab;
     *cab = nuevo;
@@ -55,11 +55,11 @@ bool pop(NodoPila<T> **cab, T &dato)
 }
 
 template <class T>
-T peek(NodoPila<T> **cab) {
+T* peek(NodoPila<T> **cab) {
     if(*cab == NULL) {
         return NULL;
     }
-    return (*cab)->dato;
+    return &((*cab)->dato);
 }
 
 template <class T>

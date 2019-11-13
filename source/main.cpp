@@ -19,29 +19,46 @@ TNodo<Producto> *carritoCompras;
 void interfazAdministrador();
 void interfazUsuario();
 
+/**
+ * Caso de prueba agregando 15 productos a la lista
+ */ 
+void setup1() {
+    for(int i = 0; i < 15; i++) {
+        Producto p;
+        crearProducto(p);
+        p.codigo = 1000+i;
+        strcpy(p.nombre, "producto");
+        InsertarFinal(&listaProductos, p);
+    }
+}
 
 int main()
 {
     int n;
     CrearLista(&listaProductos);
-    system("CLS");
-    cout << "Ingrese el tipo de usuario:" << endl;
-    cout << "1. Administrador \n2. Usuario" << endl;
-    cin >> n;
+    setup1();
 
-    switch (n)
+    while (true)
     {
-    case 1:
         system("CLS");
-        interfazAdministrador();
-        break;
-    case 2:
-        system("CLS");
-        interfazUsuario();
-        break;
-    default:
-        cout << "Ingrese una de las opciones de arriba" << endl;
-        break;
+        cout << "Ingrese el tipo de usuario:" << endl;
+        cout << "1. Administrador \n2. Usuario" << endl;
+        cin >> n;
+
+        switch (n)
+        {
+        case 1:
+            system("CLS");
+            interfazAdministrador();
+            break;
+        case 2:
+            system("CLS");
+            interfazUsuario();
+            break;
+        default:
+            cout << "Ingrese una de las opciones de arriba" << endl;
+            break;
+        }
     }
 }
 
@@ -59,7 +76,7 @@ void interfazAdministrador()
         cout << "3. Borrar un producto" << endl;
         cout << "4. Consultar un producto" << endl;
         cout << "5. Mostrar estadisticas de ventas" << endl;
-        cout << "6. Salir del programa" << endl;
+        cout << "6. Volver al menu" << endl;
         cin >> n;
         switch (n)
         {
@@ -216,58 +233,75 @@ void interfazAdministrador()
     }
 }
 
-void mostrarCatalogo(TNodo<Producto> **lista)
-{
-    NodoPila<Producto *> *pila1;
-    NodoPila<Producto *> *pila2;
-    TNodo<Producto> *aux = *lista;
-
-    int i;
-
-    bool first = false;
-    int fsSize = 10;
-
-    while (aux != NULL)
-    {
-        Producto arreglo[10];
-        for (i = 0; i < 10 && aux != NULL; i++)
-        {
-            arreglo[i] = aux->dato;
-            aux = aux->sig;
-        }
-        //Defines the size of the first array
-        if(!first) {
-            if(i < 10) {
-                fsSize = i;
-            }
-            first = true;
-        }
-        push(&pila1, arreglo);
-    }
-    if(peek(&pila1) != NULL) {
-        mostrarPagina(peek(&pila1), fsSize, 1);
-    }
-}
-
-void mostrarPagina(Producto *pagina, int size, int numero)
+void mostrarPagina(Producto *productos, int size, int numero)
 {
     system("cls");
     cout << "Pagina " << numero << endl;
     int i;
     for (i = 0; i < size; i++)
     {
-        cout << i << ". " << pagina[i].codigo << "\t" << pagina[i].nombre << endl;
+        cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
+    }
+}
+
+void mostrarCatalogo(TNodo<Producto> **lista)
+{
+    NodoPila<Pagina> *pila1;
+    CrearPila(&pila1);
+    NodoPila<Pagina> *pila2;
+    CrearPila(&pila2);
+    TNodo<Producto> *aux = *lista;
+
+    int i;
+
+    while (aux != NULL)
+    {
+        Pagina p;
+        for (i = 0; i < 10 && aux != NULL; i++)
+        {
+            p.productos[i] = aux->dato;
+            aux = aux->sig;
+        }
+        p.size = i;
+
+        push(&pila2, p);
+    }
+    //Devuelve las paginas
+    while(!PilaVacia(&pila2)) {
+        Pagina p;
+        pop(&pila2, p);
+        push(&pila1, p);
+    }
+    if (peek(&pila1) != NULL)
+    {
+        Pagina *x = peek(&pila1);
+        mostrarPagina(x->productos, x->size, 1);
     }
 }
 
 //TODO implementar la interfaz de usuario
 void interfazUsuario()
 {
-    cout << endl;
-    cout << "--Cliente--" << endl;
-    cout << "1. Buscar un producto" << endl;
-    cout << "2. Ordenar lista" << endl;
-    cout << "3. Mostrar catálogo" << endl;
-    cout << "4. Mostrar carrito" << endl;
-    cout << "6. Salir del programa" << endl;
+    int n;
+    int codigo;
+
+    while (true)
+    {
+        cout << endl;
+        cout << "--Cliente--" << endl;
+        cout << "1. Buscar un producto" << endl;
+        cout << "2. Ordenar lista" << endl;
+        cout << "3. Mostrar catálogo" << endl;
+        cout << "4. Mostrar carrito" << endl;
+        cout << "6. Salir del programa" << endl;
+        cin >> n;
+        switch (n)
+        {
+        case 3:
+            mostrarCatalogo(&listaProductos);
+            break;
+        default:
+            break;
+        }
+    }
 }
