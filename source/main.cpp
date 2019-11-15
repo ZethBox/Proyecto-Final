@@ -21,12 +21,14 @@ void interfazUsuario();
 
 /**
  * Caso de prueba agregando 15 productos a la lista
- */ 
-void setup1() {
-    for(int i = 0; i < 15; i++) {
+ */
+void setup1()
+{
+    for (int i = 0; i < 15; i++)
+    {
         Producto p;
         crearProducto(p);
-        p.codigo = 1000+i;
+        p.codigo = 1000 + i;
         strcpy(p.nombre, "producto");
         InsertarFinal(&listaProductos, p);
     }
@@ -35,6 +37,8 @@ void setup1() {
 int main()
 {
     int n;
+
+    int a;
     CrearLista(&listaProductos);
     setup1();
 
@@ -233,6 +237,18 @@ void interfazAdministrador()
     }
 }
 
+void mostrarCarrito()
+{
+    system("cls");
+    cout << "Carrito de compras:" << endl;
+    TNodo<Producto> *aux = carritoCompras;
+    while (aux != NULL)
+    {
+        cout << (aux->dato).nombre << " " << (aux->dato).codigo << endl;
+        aux = aux->sig;
+    }
+}
+
 void mostrarPagina(Producto *productos, int size, int numero)
 {
     system("cls");
@@ -241,6 +257,23 @@ void mostrarPagina(Producto *productos, int size, int numero)
     for (i = 0; i < size; i++)
     {
         cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
+    }
+    cout << "Ingrese el numero del producto para agregarlo al carrito o cualquier otro numero para volver" << endl;
+    int n;
+    cin >> n;
+    while (n < size && n >= 0)
+    {
+        if (n >= 0 && n < size)
+        {
+            InsertarFinal(&carritoCompras, productos[n]);
+            cout << "Se ha insertado en el carrito de compras el producto: " << productos[n].nombre << endl;
+        }
+        else
+        {
+            cout << "No se han insertado productos en el carrito" << endl;
+        }
+        cout << "Ingrese otro numero para agregar mas al carrito" << endl;
+        cin >> n;
     }
 }
 
@@ -267,7 +300,8 @@ void mostrarCatalogo(TNodo<Producto> **lista)
         push(&pila2, p);
     }
     //Devuelve las paginas
-    while(!PilaVacia(&pila2)) {
+    while (!PilaVacia(&pila2))
+    {
         Pagina p;
         pop(&pila2, p);
         push(&pila1, p);
@@ -291,14 +325,18 @@ void interfazUsuario()
         cout << "--Cliente--" << endl;
         cout << "1. Buscar un producto" << endl;
         cout << "2. Ordenar lista" << endl;
-        cout << "3. Mostrar catálogo" << endl;
+        cout << "3. Mostrar catalogo" << endl;
         cout << "4. Mostrar carrito" << endl;
-        cout << "6. Salir del programa" << endl;
+        cout << "6. Volver al menu" << endl;
+        cout << "7. Salir del programa" << endl;
         cin >> n;
         switch (n)
         {
         case 3:
             mostrarCatalogo(&listaProductos);
+            break;
+        case 4:
+            mostrarCarrito();
             break;
         default:
             break;
