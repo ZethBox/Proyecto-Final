@@ -14,7 +14,7 @@ TNodo<Producto> *listaProductos;
 /**
  * Lista de productos a comprar
  */
-TNodo<Producto> *carritoCompras;
+TNodo<ProductoCarrito> *carritoCompras;
 
 void interfazAdministrador();
 void interfazUsuario();
@@ -241,15 +241,44 @@ void mostrarCarrito()
 {
     system("cls");
     cout << "Carrito de compras:" << endl;
-    TNodo<Producto> *aux = carritoCompras;
+    cout << "cod: xcantidad \t nombre" << endl;
+    TNodo<ProductoCarrito> *aux = carritoCompras;
     while (aux != NULL)
     {
-        cout << (aux->dato).nombre << " " << (aux->dato).codigo << endl;
+        cout << (aux->dato).producto.codigo << ": x" << (aux->dato).cantidad << "\t" << (aux->dato).producto.nombre << endl;
         aux = aux->sig;
     }
 }
 
-void mostrarPagina(Producto *productos, int size, int numero)
+void agregarCarrito(TNodo<ProductoCarrito> **carrito, Producto p)
+{
+    TNodo<ProductoCarrito> *act;
+    act = *carrito;
+    bool enCarrito = false;
+    while (act != NULL)
+    {
+        if ((act->dato).producto.codigo == p.codigo)
+        {
+            enCarrito = true;
+            break;
+        }
+        act = act->sig;
+    }
+    if (enCarrito)
+    {
+        (act->dato).cantidad++;
+    }
+    else
+    {
+        ProductoCarrito nuevo;
+        nuevo.producto = p;
+        nuevo.cantidad = 1;
+        InsertarFinal(&carritoCompras, nuevo);
+    }
+    cout << "Se ha insertado el producto en el carrito" << endl;
+}
+
+int mostrarPagina(Producto *productos, int size, int numero)
 {
     system("cls");
     cout << "Pagina " << numero << endl;
@@ -258,22 +287,30 @@ void mostrarPagina(Producto *productos, int size, int numero)
     {
         cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
     }
-    cout << "Ingrese el numero del producto para agregarlo al carrito o cualquier otro numero para volver" << endl;
+    cout << "Ingrese el numero del producto para agregarlo al carrito o" << endl;
+    cout << "Ingrese: -1 pagina anterior, o 10 pagina siguiente:" << endl;
     int n;
-    cin >> n;
-    while (n < size && n >= 0)
+    while (cin >> n)
     {
         if (n >= 0 && n < size)
         {
-            InsertarFinal(&carritoCompras, productos[n]);
-            cout << "Se ha insertado en el carrito de compras el producto: " << productos[n].nombre << endl;
+            system("cls");
+            agregarCarrito(&carritoCompras, productos[n]);
+            for (i = 0; i < size; i++)
+            {
+                cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
+            }
+            cout << "Ingrese otro numero para agregar mas al carrito: ";
         }
         else
         {
-            cout << "No se han insertado productos en el carrito" << endl;
+            if(n == -1) 
+                return n;
+            else if (n == 10) 
+                return 1;
+            else
+                return 0;
         }
-        cout << "Ingrese otro numero para agregar mas al carrito" << endl;
-        cin >> n;
     }
 }
 
