@@ -262,6 +262,35 @@ void mostrarCarrito(TNodo<ProductoCarrito> **carrito, TNodo<Producto> **listaPro
     }
     else if (n == 2)
     {
+        int cod;
+        int cant;
+        cout << "Ingrese el codigo del elemento que desea eliminar: " << endl;
+        cin >> cod;
+        cout << "Ingrese la cantidad que desea eliminar:" << endl;
+        cin >> cant;
+        aux = *carrito;
+        while(aux != NULL) 
+        {
+            if((aux->dato).producto.codigo == cod)
+            {
+                if((aux->dato).cantidad >= cant)
+                {
+                    for(int i = 0; i < cant; i++)
+                    {
+                        eliminarCarrito(carrito, cod);
+                    }
+                    cout << "Se ha eliminado el producto del carrito!" << endl;
+                    return;
+                }
+                else
+                {
+                    cout << "No hay suficientes productos para eliminar la cantidad deseada" << endl;
+                    return;
+                }
+            }
+            aux = aux->sig;
+        }
+        cout << "El codigo ingresado no se encontro en la lista!" << endl;
     }
 }
 
@@ -518,80 +547,83 @@ void ordenarLista(TNodo<Producto> **listaProductos, int criterio)
     TNodo<Producto> *i, *j;
     i = *listaProductos;
     Producto Temp;
-    switch (criterio)
+    if(i != NULL)
     {
-    case NOMBRE:
-        while (i->sig != NULL)
+        switch (criterio)
         {
-            j = i->sig;
-            while (j != NULL)
+        case NOMBRE:
+            while (i->sig != NULL)
             {
-                if (strcmp((i->dato).nombre, (j->dato).nombre) == 1)
+                j = i->sig;
+                while (j != NULL)
                 {
-                    Temp = i->dato;
-                    i->dato = j->dato;
-                    j->dato = Temp;
+                    if (strcmp((i->dato).nombre, (j->dato).nombre) == 1)
+                    {
+                        Temp = i->dato;
+                        i->dato = j->dato;
+                        j->dato = Temp;
+                    }
+                    j = j->sig;
                 }
-                j = j->sig;
+                i = i->sig;
             }
-            i = i->sig;
-        }
-        break;
+            break;
 
-    case PRECIO:
-        while (i->sig != NULL)
-        {
-            j = i->sig;
-            while (j != NULL)
+        case PRECIO:
+            while (i->sig != NULL)
             {
-                if ((i->dato).precioVenta > (j->dato).precioVenta)
+                j = i->sig;
+                while (j != NULL)
                 {
-                    Temp = i->dato;
-                    i->dato = j->dato;
-                    j->dato = Temp;
+                    if ((i->dato).precioVenta > (j->dato).precioVenta)
+                    {
+                        Temp = i->dato;
+                        i->dato = j->dato;
+                        j->dato = Temp;
+                    }
+                    j = j->sig;
                 }
-                j = j->sig;
+                i = i->sig;
             }
-            i = i->sig;
-        }
-        break;
+            break;
 
-    case RESTAURANTE:
-        while (i->sig != NULL)
-        {
-            j = i->sig;
-            while (j != NULL)
+        case RESTAURANTE:
+            while (i->sig != NULL)
             {
-                if (strcmp((i->dato).restaurante, (j->dato).restaurante) == 1)
+                j = i->sig;
+                while (j != NULL)
                 {
-                    Temp = i->dato;
-                    i->dato = j->dato;
-                    j->dato = Temp;
+                    if (strcmp((i->dato).restaurante, (j->dato).restaurante) == 1)
+                    {
+                        Temp = i->dato;
+                        i->dato = j->dato;
+                        j->dato = Temp;
+                    }
+                    j = j->sig;
                 }
-                j = j->sig;
+                i = i->sig;
             }
-            i = i->sig;
-        }
-        break;
-    case PROMOCIONES:
-        while (i->sig != NULL)
-        {
-            j = i->sig;
-            while (j != NULL)
+            break;
+        case PROMOCIONES:
+            while (i->sig != NULL)
             {
-                if ((i->dato).enPromocion < (j->dato).enPromocion)
+                j = i->sig;
+                while (j != NULL)
                 {
-                    Temp = i->dato;
-                    i->dato = j->dato;
-                    j->dato = Temp;
+                    if ((i->dato).enPromocion < (j->dato).enPromocion)
+                    {
+                        Temp = i->dato;
+                        i->dato = j->dato;
+                        j->dato = Temp;
+                    }
+                    j = j->sig;
                 }
-                j = j->sig;
+                i = i->sig;
             }
-            i = i->sig;
+            break;
+        default:
+            cout << "Criterio invalido" << endl;
+            break;
         }
-        break;
-    default:
-        cout << "Criterio invalido" << endl;
-        break;
     }
 }
