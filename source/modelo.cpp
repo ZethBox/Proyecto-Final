@@ -84,7 +84,7 @@ void imprimirLista(TNodo<Producto> **listaProductos)
         strcpy(promocion, "No");
         if(actual.enPromocion)
             strcpy(promocion, "Si");
-        printf("Codigo: %i - Costo: %.2f$ - Inventario: X%i - Vendidos: %i - Promocion: %s - Nombre: %s - Restaurante: %s\n", actual.codigo, actual.costo, actual.cantidadDisponible, actual.cantidadVendida, promocion, actual.nombre, actual.restaurante);
+        printf("Codigo: %i - Costo: %.2f$ - PrecioVenta: %.2f - Inventario: X%i - Vendidos: %i - Promocion: %s - Nombre: %s - Restaurante: %s\n", actual.codigo, actual.costo, actual.precioVenta, actual.cantidadDisponible, actual.cantidadVendida, promocion, actual.nombre, actual.restaurante);
         producto = producto->sig;
     }
 }
