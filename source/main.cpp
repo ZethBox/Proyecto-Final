@@ -19,6 +19,8 @@ TNodo<ProductoCarrito> *carritoCompras;
 void interfazAdministrador();
 void interfazUsuario();
 
+char archivo[50];
+
 /**
  * Caso de prueba agregando 15 productos a la lista
  */
@@ -36,29 +38,48 @@ void setup1()
 
 int main()
 {
+    strcpy(archivo, "productos.dat");
     int n;
 
     int a;
     CrearLista(&listaProductos);
-    setup1();
-
+    cout << "Desea cargar la informacion reciente?" << endl;
+    cout << "1. Si" << endl;
+    cout << "2. No" << endl;
+    cin >> n;
+    if (n == 1)
+    {
+        if (cargar(&listaProductos, archivo))
+        {
+            cout << "Se ha cargado el archivo "
+                 << "productos.dat"
+                 << " con exito" << endl;
+        }
+        else
+            cout << "No se ha logrado cargar el archivo" << endl;
+        ;
+        system("pause");
+    }
     while (true)
     {
         system("CLS");
         cout << "Ingrese el tipo de usuario:" << endl;
-        cout << "1. Administrador \n2. Usuario" << endl;
+        cout << "1. Administrador \n2. Usuario \n3. Salir del programa" << endl;
         cin >> n;
 
         switch (n)
         {
         case 1:
             system("CLS");
+            ordenarLista(&listaProductos, NOMBRE);
             interfazAdministrador();
             break;
         case 2:
             system("CLS");
             interfazUsuario();
             break;
+        case 3:
+            return 0;
         default:
             cout << "Ingrese una de las opciones de arriba" << endl;
             break;
@@ -80,7 +101,8 @@ void interfazAdministrador()
         cout << "3. Borrar un producto" << endl;
         cout << "4. Consultar un producto" << endl;
         cout << "5. Mostrar estadisticas de ventas" << endl;
-        cout << "6. Volver al menu" << endl;
+        cout << "6. Listar productos" << endl;
+        cout << "7. Volver al menu" << endl;
         cin >> n;
         switch (n)
         {
@@ -88,7 +110,7 @@ void interfazAdministrador()
             system("CLS");
             Producto nuevo;
             crearProducto(nuevo);
-            cout << "Ingresar codigo: " << endl;
+            cout << "Ingresar codigo (Solo numeros): " << endl;
             cin >> nuevo.codigo;
             cout << "Ingresar costo: " << endl;
             cin >> nuevo.costo;
@@ -102,7 +124,7 @@ void interfazAdministrador()
             cout << "Ingresar nombre del restaurante:" << endl;
             cin.ignore();
             cin.getline(nuevo.restaurante, 100);
-            cout << "Esta en promocion? \n1. Si\nCualquier otra letra si no" << endl;
+            cout << "Esta en promocion? \n1. Si\n2. No" << endl;
             n = 0;
             cin >> n;
             if (n == 1)
@@ -139,7 +161,7 @@ void interfazAdministrador()
                 cin >> modificado->precioVenta;
                 cout << "Ingresar nueva cantidad disponible:" << endl;
                 cin >> modificado->cantidadDisponible;
-                cout << "Esta en promocion? \n1. Si\nCualquier otra letra si no" << endl;
+                cout << "Esta en promocion? \n1. Si\n2. No" << endl;
                 n = 0;
                 cin >> n;
                 if (n == 1)
@@ -183,7 +205,7 @@ void interfazAdministrador()
                 cout << "Costo: " << consultado->costo << endl;
                 cout << "Precio de venta: " << consultado->precioVenta << endl;
                 cout << "Descripcion: " << consultado->descripcion << endl;
-                cout << "Promocion: ";
+                cout << "Promocion?: ";
                 if (consultado->enPromocion)
                     cout << "Si" << endl;
                 else
@@ -200,13 +222,40 @@ void interfazAdministrador()
         case 5:
             system("CLS");
             TNodo<Producto> *act;
-            act = darProductosMasVendidos(&listaProductos);
-            int puesto;
+            act = darProductosMasVendidos(listaProductos);
+            cout << "Productos mas vendidos: " << endl;
+            while (act != NULL)
+            {
+                cout << (act->dato).nombre;
+                for (int i = 0; (i < (act->dato).cantidadVendida); i++)
+                {
+                    cout << " *";
+                }
+                cout << endl;
+                act = act->sig;
+            }
+            cout << endl;
+            cout << "Productos menos vendidos: " << endl;
+            act = darProductosMenosVendidos(listaProductos);
+            while (act != NULL)
+            {
+                cout << (act->dato).nombre;
+                for (int i = 0; i < (act->dato).cantidadVendida; i++)
+                {
+                    cout << " *";
+                }
+                cout << endl;
+                act = act->sig;
+            }
 
             break;
         case 6:
             system("CLS");
-            cout << "Desea guardar los cambios antes de salir?" << endl;
+            imprimirLista(&listaProductos);
+            break;
+        case 7:
+            system("CLS");
+            cout << "Desea guardar los cambios antes de volver al menu?" << endl;
             cout << "1. Si" << endl;
             cout << "2. No" << endl;
             int aux;
@@ -214,139 +263,28 @@ void interfazAdministrador()
             switch (aux)
             {
             case 1:
-                cout << "Se han guardado los cambios" << endl;
+                if (guardar(listaProductos))
+                {
+                    cout << "Se han guardado los cambios" << endl;
+                    system("pause");
+                }
                 //TODO agregar codigo para guardar los cambios
                 return;
                 break;
             case 2:
                 system("CLS");
                 cout << "Los cambios no han sido guardados" << endl;
+                CrearLista(&listaProductos);
+                cargar(&listaProductos, archivo);
                 return;
                 break;
             default:
-                system("CLS");
+                system("cls");
                 cout << "Opcion incorrecta" << endl;
+                system("pause");
                 break;
             }
-            break;
-        default:
-            system("CLS");
-            imprimirLista(&listaProductos);
-            break;
         }
-    }
-}
-
-void mostrarCarrito()
-{
-    system("cls");
-    cout << "Carrito de compras:" << endl;
-    cout << "cod: xcantidad \t nombre" << endl;
-    TNodo<ProductoCarrito> *aux = carritoCompras;
-    while (aux != NULL)
-    {
-        cout << (aux->dato).producto.codigo << ": x" << (aux->dato).cantidad << "\t" << (aux->dato).producto.nombre << endl;
-        aux = aux->sig;
-    }
-}
-
-void agregarCarrito(TNodo<ProductoCarrito> **carrito, Producto p)
-{
-    TNodo<ProductoCarrito> *act;
-    act = *carrito;
-    bool enCarrito = false;
-    while (act != NULL)
-    {
-        if ((act->dato).producto.codigo == p.codigo)
-        {
-            enCarrito = true;
-            break;
-        }
-        act = act->sig;
-    }
-    if (enCarrito)
-    {
-        (act->dato).cantidad++;
-    }
-    else
-    {
-        ProductoCarrito nuevo;
-        nuevo.producto = p;
-        nuevo.cantidad = 1;
-        InsertarFinal(&carritoCompras, nuevo);
-    }
-    cout << "Se ha insertado el producto en el carrito" << endl;
-}
-
-int mostrarPagina(Producto *productos, int size, int numero)
-{
-    system("cls");
-    cout << "Pagina " << numero << endl;
-    int i;
-    for (i = 0; i < size; i++)
-    {
-        cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
-    }
-    cout << "Ingrese el numero del producto para agregarlo al carrito o" << endl;
-    cout << "Ingrese: -1 pagina anterior, o 10 pagina siguiente:" << endl;
-    int n;
-    while (cin >> n)
-    {
-        if (n >= 0 && n < size)
-        {
-            system("cls");
-            agregarCarrito(&carritoCompras, productos[n]);
-            for (i = 0; i < size; i++)
-            {
-                cout << i << ". " << productos[i].codigo << "\t" << productos[i].nombre << endl;
-            }
-            cout << "Ingrese otro numero para agregar mas al carrito: ";
-        }
-        else
-        {
-            if(n == -1) 
-                return n;
-            else if (n == 10) 
-                return 1;
-            else
-                return 0;
-        }
-    }
-}
-
-void mostrarCatalogo(TNodo<Producto> **lista)
-{
-    NodoPila<Pagina> *pila1;
-    CrearPila(&pila1);
-    NodoPila<Pagina> *pila2;
-    CrearPila(&pila2);
-    TNodo<Producto> *aux = *lista;
-
-    int i;
-
-    while (aux != NULL)
-    {
-        Pagina p;
-        for (i = 0; i < 10 && aux != NULL; i++)
-        {
-            p.productos[i] = aux->dato;
-            aux = aux->sig;
-        }
-        p.size = i;
-
-        push(&pila2, p);
-    }
-    //Devuelve las paginas
-    while (!PilaVacia(&pila2))
-    {
-        Pagina p;
-        pop(&pila2, p);
-        push(&pila1, p);
-    }
-    if (peek(&pila1) != NULL)
-    {
-        Pagina *x = peek(&pila1);
-        mostrarPagina(x->productos, x->size, 1);
     }
 }
 
@@ -364,17 +302,51 @@ void interfazUsuario()
         cout << "2. Ordenar lista" << endl;
         cout << "3. Mostrar catalogo" << endl;
         cout << "4. Mostrar carrito" << endl;
-        cout << "6. Volver al menu" << endl;
-        cout << "7. Salir del programa" << endl;
+        cout << "5. Volver al menu" << endl;
         cin >> n;
         switch (n)
         {
+        case 1:
+            char cadena[100];
+            system("cls");
+            cout << "Ingrese una cadena para buscar (maximo 100 caracteres):" << endl;
+            cin.ignore();
+            cin.getline(cadena, sizeof(cadena));
+            TNodo<Producto> *busqueda;
+            CrearLista(&busqueda);
+            busqueda = buscarProductos(&listaProductos, cadena);
+            TNodo<Producto> *act;
+            act = busqueda;
+            if(act == NULL) 
+            {
+                cout << "No se encontraron resultados para la busqueda" << endl;
+            }
+            cout << endl;
+            while(act != NULL) 
+            {
+                printf("Codigo: %i - Nombre: %s - Descripcion: %s ", (act->dato).codigo, (act->dato).nombre, (act->dato).descripcion);
+                cout << endl;
+                act = act->sig;
+            }
+            system("pause");
+            break;
+        case 2:
+            system("cls");
+            int c;
+            cout << "Ingrese el criterio por el cual desesa ordenar la lista:" << endl;
+            cout << "1. NOMBRE\n2. PRECIO\n3. RESTAURANTES\n4. PROMOCIONES" << endl;
+            cin >> c;
+            ordenarLista(&listaProductos, c);
+            imprimirLista(&listaProductos);
+            break;
         case 3:
-            mostrarCatalogo(&listaProductos);
+            mostrarCatalogo(&listaProductos, &carritoCompras);
             break;
         case 4:
-            mostrarCarrito();
+            mostrarCarrito(&carritoCompras, &listaProductos);
             break;
+        case 5:
+            return;
         default:
             break;
         }

@@ -91,7 +91,7 @@ Producto* consultarProducto(TNodo<Producto> **listaProductos, int codigo);
  * Salidas:
  *  Lista con los 5 productos mas vendidos
  */ 
-TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> **listaProductos);
+TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> *listaProductos);
 
 /**
  * Retorna una lista con los 5 productos menos vendidos de la lista pasada por parametro
@@ -100,7 +100,7 @@ TNodo<Producto> *darProductosMasVendidos(TNodo<Producto> **listaProductos);
  * Salidas:
  *  Lista con los 5 productos menos vendidos
  */ 
-TNodo<Producto> *darProductosMenosVendidos(TNodo<Producto> **listaProductos);
+TNodo<Producto> *darProductosMenosVendidos(TNodo<Producto> *listaProductos);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //Funciones de Cliente
@@ -115,7 +115,7 @@ TNodo<Producto> *darProductosMenosVendidos(TNodo<Producto> **listaProductos);
  *  Lista - con productos que contengan la cadena en el nombre o descripcion
  *  NULL - si no hay productos que cumplan con este criterio
  */ 
-TNodo<Producto>* buscarProducto(char* cadena);
+TNodo<Producto> *buscarProductos(TNodo<Producto> **listaProductos, char *str);
 
 /**
  * Ordena la lista de productos por uno de estos criterios: nombre, precio, restaurante ó promociones
@@ -127,14 +127,6 @@ TNodo<Producto>* buscarProducto(char* cadena);
 void ordenarLista(TNodo<Producto> **listaProductos, int criterio);
 
 /**
- * Muestra la lista de productos pasados por parametro en consola.
- * Por cada página se muestran 10 productos, de cada productos se muestra:
- * El código, nombre y el valor.
- * Se permite seleccionar un producto de la lista para añadirlo al carrito de compras.
- */ 
-void mostrarLista(TNodo<Producto> **listaProductos);
-
-/**
  * Muestra el carrito de compras pasado por parámetro en la consola.
  * Se permite al usuario borrar elementos del carrito, al hacerlo se actualiza.
  * Tambien se permite comprar el carrito, entonces para cada producto en el carrito se 
@@ -143,20 +135,6 @@ void mostrarLista(TNodo<Producto> **listaProductos);
  *  carrito - el carrito de compras que es una lista de productos
  */ 
 void mostrarCarrito(TNodo<Producto> **carrito);
-
-/**
- * Vende un producto con el codigo pasado por parametro.
- * Al venderlo la cantidad disponible debe disminuir y la cantidad vendida debe aumentar.
- * Si no hay suficientes productos para la venta, el producto no es vendido
- * Entradas:
- *  listaProductos - lista de los productos
- *  codigo - codigo del producto a vender
- * Salidas:
- *  true - Si se vende el producto exitosamente
- *  false - Si hay un error al vender el producto (el codigo no esta en la lista o el producto no tiene cantidad disponible)
- */ 
-bool venderProducto(TNodo<Producto> **listaProductos, int codigo);
-
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //Funciones Auxiliares y Adicionales
@@ -167,5 +145,30 @@ bool venderProducto(TNodo<Producto> **listaProductos, int codigo);
  * Por cada elemento de la lista: "Producto:" nombre "Codigo:" codigo
  */ 
 void imprimirLista(TNodo<Producto> **listaProductos);
+
+/**
+ * Muestra el catalogo de todos los productos al cliente
+ */ 
+void mostrarCatalogo(TNodo<Producto> **lista, TNodo<ProductoCarrito> **carrito);
+
+/**
+ * Muestra la pagina generafa de un arreglo de productos
+ */ 
+int mostrarPagina(Producto *productos, int size, int numero, TNodo<ProductoCarrito> **carrito);
+
+/**
+ * Muestra el carrito de compras y da la opcion de comprar el carrito o eliminar elementos del carrito
+ */ 
+void mostrarCarrito(TNodo<ProductoCarrito> **carrito);
+
+/**
+ * Intenta comprar todo el carrito de mercado, muestra al usuario si hay problemas de disponibilidad al intentar comprar los productos
+ */ 
+void comprarCarrito(TNodo<ProductoCarrito> **carrito, TNodo<Producto> **listaProductos);
+
+/**
+ * Intenta eliminar un producto del carrito. Si el producto no existe en el carrito retorna false, si existe lo elimina o disminuye la cantidad y retorna true
+ */ 
+bool eliminarCarrito(TNodo<ProductoCarrito> **carrito, int codigo);
 
 #endif
