@@ -41,8 +41,8 @@ int main()
     strcpy(archivo, "productos.dat");
     int n;
 
-    int a;
     CrearLista(&listaProductos);
+    system("cls");
     cout << "Desea cargar la informacion reciente?" << endl;
     cout << "1. Si" << endl;
     cout << "2. No" << endl;
@@ -63,6 +63,7 @@ int main()
     while (true)
     {
         system("CLS");
+        cout << "Bienvenido a Trappi" << endl;
         cout << "Ingrese el tipo de usuario:" << endl;
         cout << "1. Administrador \n2. Usuario \n3. Salir del programa" << endl;
         cin >> n;
